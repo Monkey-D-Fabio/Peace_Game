@@ -1,11 +1,3 @@
-'''
-
-                            Online Python Compiler.
-                Code, Compile, Run and Debug python program online.
-Write your code in this editor and press "Run" button to execute it.
-
-'''
-
 # Import necessary modules
 import random
 
@@ -13,9 +5,10 @@ import random
 ranks = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
 suits = ("hearts", "diamonds", "clubs", "spades")
 
-# Create a deck of cards
+# Create a deck of cards and discard piles
 deck = [(suit,rank) for suit in suits for rank in ranks]
-
+pile1 = 0
+pile2 = 0
 # Shuffle the deck 
 
 random.shuffle(deck)
@@ -35,15 +28,14 @@ def card_comparison(p1_card, p2_card):
     elif ranks.index(p1_card[1]) < ranks.index(p2_card[1]):
         print("P2 BEATS!!! P2")
         return 2
-    print("WARRRRRRR!!!!!")
-    war(player1_hand, player2_hand)
+    return 0
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
 	"""
     # Your code here
-    print()
+    
 def war(player1_hand, player2_hand):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
@@ -51,15 +43,20 @@ def war(player1_hand, player2_hand):
 		card takes all the cards.		
 	"""
     # Your code here
-
+    
 def play_game():
     """Main function to run the game."""
     # Your code here
     while len(p1_deck) > 0 and len(p2_deck) > 0:
-        p1_card, p2_card = player1_hand.pop(0), player2_hand(0)
+        p1_card, p2_card = player1_hand.pop(0), player2_hand.pop(0)
         result = card_comparaison(p1_card, p2_card)
         if result == 1:
-
+		pile1 +=2
+	elif result == 2:
+		pile2 += 2
+	elif not(result):
+		war(player1_hand, player2_hand)
+				
 # Call the main function to start the game
 play_game()
 
