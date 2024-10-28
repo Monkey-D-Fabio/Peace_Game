@@ -47,29 +47,37 @@ def play_round(result, p1_card, p2_card, pile1, pile2):
     	print("WAAAAAAARRRRR")
     	#pile2.append(p1_card)
     	#pile2.append(p2_card)
-    	war(p1_card, p2_card, player1_hand, player2_hand)
-def war(p1_card, p2_card, player1_hand, player2_hand):
+    	war(p1_card, p2_card, player1_hand, player2_hand, pile1, pile2)
+def war(p1_card, p2_card, player1_hand, player2_hand, pile1, pile2):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
 		card takes all the cards.		
 	"""
+    
     war_extra_cards = []
     while ranks.index(p1_card[1]) == ranks.index(p2_card[1]):
         cards1_left = 4
         cards2_left = 4
         if len(player1_hand) < 4:
-    	    cards1_left = 4 - len(player1_hand)
-    	    war_extra_cards += player1_hand
-    	    player1_hand = pile1
-    	    random.shuffle(player1_hand)
+            cards1_left = 4 - len(player1_hand)
+            if cards1_left >= len(pile1):
+                play_game([], player2_hand, pile1, pile2)
+            war_extra_cards += player1_hand
+            player1_hand = pile1
+            pile1 = []
+            random.shuffle(player1_hand)
         if len(player2_hand) < 4:
-    	    cards2_left = 4 - len(player2_hand)
-    	    war_extra_cards += player2_hand
-    	    player2_hand = pile2
-    	    random.shuffle(player2_hand)
+            cards2_left = 4 - len(player2_hand)
+            if cards2_left >= len(pile2):
+                play_game(player1_hand, [] , pile1, pile2)
+            war_extra_cards += player2_hand
+            player2_hand = pile2
+            pile2 = []
+            random.shuffle(player2_hand)
         print(war_extra_cards)
         for i in range(cards1_left):
+	    # if its faceup card
             if i + 1 == cards1_left:
                 p1_card = player1_hand.pop(0)
                 war_extra_cards.append(p1_card)
@@ -85,8 +93,17 @@ def war(p1_card, p2_card, player1_hand, player2_hand):
             else:
                 print(player2_hand)
                 war_extra_cards.append(player2_hand.pop(0))
+	    
     result= card_comparison(p1_card, p2_card)
-    play_round(result, p1_card, p2_card, pile1, pile2)
+    if result == 1:
+        for card in war_extra_cards:
+            pile1.append(card)
+        print("P1 won the war")
+    elif result == 2:
+        for card in war_extra_cards:
+            pile2.append(card)
+        print("P2 won the war")
+	    
     
             
         
